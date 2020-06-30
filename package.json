@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
     "dev": "vuepress dev docs",
-    "build": "vuepress build docs"
+    "build": "vuepress build docs",
+    "deploy": "bash deploy.sh"
   },
   "dependencies": {
     "core-js": "^3.6.5",
