@@ -1,9 +1,8 @@
 
 module.exports = {
-    title: '家盛社区',
+    title: '东信社区',
     description: '后端？前端？不，我们是全栈',
-    base: '/eastcom/',
-    // dest: './docs/.vuepress/dist',
+    base: '/',
     markdown: {
         lineNumbers: true // 代码块显示行号
     },
@@ -11,9 +10,28 @@ module.exports = {
         logo: '/logo.png',
         nav:[
             { text: '首页', link: '/' },
-            { text: 'JavaScript', link: '/javascript/' },
-            { text: 'VueJs', link: '/vueJs/' },
-            { text: 'GitLab', link: 'http://gitlab.eastcom-sw.com/' },
+            {
+                text: '前端',
+                items: [
+                    { text: 'JavaScript & ES6', link: '/javascript/' },
+                    { text: 'VueJs', link: '/vueJs/' }
+                ]
+            },
+            {
+                text: '后端',
+                items: [
+                    { text: 'SpringBoot', link: '/springboot/' },
+                    { text: 'SpringCloud', link: '/springcloud/' }
+                ]
+            },
+            { text: '组件库', link: '/compoents/' },
+            {
+                text: '仓库',
+                items: [
+                    { text: 'Github', link: 'https://github.com/' },
+                    { text: 'GitLab', link: 'http://gitlab.eastcom-sw.com/' }
+                ]
+            },
             {
                 text: '社区',
                 items: [
@@ -21,9 +39,7 @@ module.exports = {
                     { text: '掘金社区', link: 'https://juejin.im/timeline' },
                     { text: 'Segmentfault', link: 'https://segmentfault.com/' }
                 ]
-            },
-            { text: 'Github', link: 'https://github.com/' }
-
+            }
         ],
         sidebar: 'auto', // 侧边栏配置
         sidebarDepth: 2, // 侧边栏显示2级
