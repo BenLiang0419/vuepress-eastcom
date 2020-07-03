@@ -1,7 +1,7 @@
 ---
-title: JavaScript & ES6
+title: VueJs攻克之道
 sidebar: auto
-sidebarDepth: 3
+sidebarDepth: 1
 ---
 
 
@@ -19,6 +19,35 @@ MVVM包含了 Model（数据层）、View（视图层）、ViewModel（视图数
 ![mvvm](/image/vuejs/mvvm.png)
 
 ## VueJs的生命周期
+
+### 生命周期的流程图
+
+![life](/image/vuejs/life.png)
+
+### 生命周期过程的解析
+
+:point_right: **new Vue()** :fast_forward: 准备创建一个实例 <br/>
+:point_right: **初始化** :fast_forward: 初始化事件，部分生命周期 <br/>
+:point_right: **beforeCreated()** :fast_forward: 实例还没创建，根据一些权限判断是否渲染下去  <br/>
+:point_right: **初始化** :fast_forward: 1. 初始化data, methods, filter等等；2. 根据一些校验是否可以继续渲染<br/>
+:point_right: **实例创建成功** :fast_forward: 结束创建实例阶段<br/> 
+:point_right: **created()** :fast_forward: 1. data, methods, filter等等已挂载到实例上面；2. 可以进行后端数据的异步调用获取<br/>
+:point_right: **判断是否指定"el"元素** :fast_forward: **是指定：** 查找相对应的tmplate模版 <br/> 
+:point_right: **判断是否指定"el"元素** :fast_forward: **不是指定:** 就通过vm.$mount(el)找到相对应的tmplate模版 <br/>
+:point_right: **判断是否指定"tempalte"模版** :fast_forward: **是指定：** 将template模版放到render函数里面进行编译<br/> 
+:point_right: **判断是否指定"tempalte"模版** :fast_forward: **不是指定：** 将el外部的HTML作为template进行编译<br/> 
+:point_right: **beforeMounted()** :fast_forward: 虚拟的DOM模版已经编译成功了，但并未加载到界面上，所以界面上是空白的<br/>
+:point_right: **创建vm.$el取代"el"** :fast_forward: 将虚拟的DOM转变成真实的DOM（DOM对象），并把真实的DOM对象渲染到页面上<br/>
+:point_right: **mounted()** :fast_forward: 真实的DOM渲染完成，可以进行DOM的操作<br/>
+:point_right: **组件完成编译** :fast_forward: 编译状态已经结束，准备进入运行阶段<br/>
+:point_right: **beforeUpdate()** :fast_forward: data有数据变化时候，进入准备新的渲染状态，注意：此时data的数据已经变化，但是界面上的数据还是旧的数据，并没有进行同步<br/>
+:point_right: **重新生成虚拟的DOM** :fast_forward: 1. 用新的DOM与旧的DOM进行对比，从而生成新的虚拟DOM<br/> 
+:point_right: **渲染新的虚拟DOM** :fast_forward: 将新的虚拟DOM渲染到界面上 <br/> 
+:point_right: **updated()** :fast_forward: 渲染后的状态，与mounted()相似 <br/> 
+:point_right: **beforeDestory()** :fast_forward: 销毁前的状态<br/> 
+:point_right: **进行销毁** :fast_forward: 销毁的时候界面上的真实DOM保持不动的（路由除外），其他挂载的属性消失<br/> 
+:point_right: **destoryed()** :fast_forward: 销毁之后的状态<br/> 
+
 
 ## VueJs常用指令
 
@@ -43,9 +72,83 @@ MVVM包含了 Model（数据层）、View（视图层）、ViewModel（视图数
 
 ## v-model
 
+>> v-model实际上是一个语法糖
+
+```html
+
+<input v-model="test" />
+
+```
+相当于
+```
+
+<template>
+    <input :value="test" @input="handleInput">
+</template>
+
+export default {
+    data() {
+        return {
+            test: ''
+        }
+    },
+    methods: {
+        handleInput(e) {
+            this.test = e.target.value;
+        }
+    }
+}
+
+```
+
+## VueJs事件指令
+
+**v-on: (简称: '@')**<br/>
+
+用法: v-on:事件='函数名' (@事件='函数名') 或者是 v-on:事件.修饰符='函数名' (@事件.修饰符='函数名')<br/>
+
+**部分修饰符:**<br/>
+
+* **@xxx.prevent='函数名'**<br/>
+阻止行为
+* **@xxx.stop='函数名'**<br/>
+阻止冒泡传播
+* **@xxx.once='函数名'**<br/>
+当前函数只会执行一次
+* **@xxx.self='函数名'**<br/>
+点击绑定的自身标签才会触发事件
 
 
 ## Class 与 Style 如何动态绑定
+
+想法: <br/>
+从基本的H5来说，我们都会把样式和Class类都会绑定在相对应的标签（元素）里面，然后通过一系列的DOM操作进行更换和添加
+现在以VueJs来说，我们将会以响应式数据的方式绑定到相对应的标签（元素）里面，然后通过改变响应式数据来进行渲染出不一样的界面效果
+
+* 静态界面编写方式 <br/>
+    ```html
+      <div class="className" style="display: block" />
+    ```
+* 以响应式数据绑定编写方式 <br/>
+    ```html
+      <template>
+          <div :class="classData" :style="styleData" >
+      </template>
+    ```
+    ```
+      export default {
+          data() {
+            return {
+                classData: {
+                    className: true 
+                },
+                styleData: {
+                    display: 'block'
+                }
+            }  
+          }
+      }  
+    ```
 
 ## computed 和 watch 的区别和运用的场景
 
@@ -161,7 +264,7 @@ Vue.component('my-component-name', { /* ... */ })
 <my-component-name :propsData="dataObj"></my-component-name>
 
 // 子组件
-export.default = {
+export default {
     props: [
         propsData: {
             type: String,
@@ -180,7 +283,7 @@ export.default = {
 
 ### $emit(自定义事件event)
 
-```
+```vue
 // 父组件
 <template>
     <base-input v-model="input" @myEvent="doSomething"></base-input>
@@ -203,7 +306,7 @@ export.default = {
     }
 </script>
 ```
-```
+```vue
 // 子组件
 <template>
     <div />
@@ -224,4 +327,236 @@ export.default = {
 </script>
 ```
 
-### 
+### .sync
+
+```vue
+<text-document v-bind:title.sync="syncData"></text-document>
+```
+```js
+//子组件
+this.$emit('update:title', "newValue")
+```
+
+### ref
+
+**在DOM元素上使用**
+```vue
+<template>
+    <div ref="ele"></div>
+    <div ref="eleV"></div>
+</template>
+<script>
+    export default {
+        data() {
+            return {
+                
+            }
+        },
+        mounted() {
+            console.log(this.$refs)
+            // this.$refs是一个对象
+            // this.$refs = {ele: DOM元素对象, eleV: DOM元素对象}
+        }
+    }
+</script>
+```
+
+**在组件上使用**
+```
+<template>
+    <MyComponent ref="ele"></MyComponent>
+</template>
+<script>
+    export default {
+        data() {
+            return {
+                
+            }
+        },
+        mounted() {
+            console.log(this.$refs.ele)
+            // this.$refs.ele是当前子组件的实例
+        }
+    }
+</script>
+```
+
+### $parent和$children
+
+#### $parent (不推荐使用)
+
+在子组件上使用，获取父组件的实例
+```
+// 子组件
+<template>
+    <div></div>
+</template>
+<script>
+    export default {
+        data() {
+            return {
+                
+            }
+        },
+        mounted() {
+            console.log(this.$parent)
+            // this.$parent获取父组件的实例
+        }
+    }
+</script>
+```
+
+#### $children
+
+在父组件上使用，获取所有子组件的实例<br/>
+$children是一个数组集合，需要我们记住顺序
+
+```
+<template>
+    <MyComponent></MyComponent>
+    <HisComponent></HisComponent>
+</template>
+<script>
+    export default {
+        data() {
+            return {
+                
+            }
+        },
+        mounted() {
+            console.log(this.$children)
+            // this.$children是一个数组集合，需要我们记住顺序 [MyComponent, HisComponent]
+        }
+    }
+</script>
+```
+
+### eventBus
+
+创建一个总事件池实例(vm实例)
+```
+// eventBus
+export eventBus = new Vue();
+```
+将事件方法放到事件池
+```
+
+import eventBus from 'xxx'
+
+export default {
+    data() {
+        return {
+        
+        }   
+    },
+    created() {
+        // 放入事件池
+        eventBus.$on('事件名称', result);
+    }
+}
+
+```
+通知事件池执行（调用）
+```
+
+import eventBus from 'xxx'
+
+export default {
+    data() {
+        return {
+        
+        }  
+    },
+    methods: {
+        handle() {
+            // 通知事件池
+            eventBus.$emit('事件名称', newResult);
+        }
+    }
+}
+
+```
+
+### $attrs和$listeners
+
+```vue
+<!-- 父类 -->
+<tempalte>
+    <child :name="name" @handle="handle"></child>
+</tempalte>
+
+<script>
+export default {
+    data() {
+        return {
+            name: ''
+        }   
+    },
+    methods: {
+        handle(value) {
+            this.name = value; //后面变成hello
+        }   
+    }   
+}
+</script>
+```
+```vue
+<!-- 子类 -->
+<tempalte>
+    <grade-child v-bind="$attrs" v-on="$listeners"></grade-child>
+</tempalte>
+
+<script>
+export default {
+    props: ["name"],
+    data() {
+        return {
+            
+        }   
+    },
+    methods: {
+        
+    }   
+}
+</script>
+```
+```vue
+<!-- 子孙类 -->
+<tempalte>
+    
+</tempalte>
+
+<script>
+export default {
+    created() {
+            this.$emit('handle', 'hello')
+    }   
+}
+</script>
+```
+
+### provide和inject
+
+需要一起使用，祖先使用了provide里面添加了属性，子孙都可以通过inject使用
+
+```js
+<!--祖先组件-->
+export default {
+    provide: {
+        author: 'yushihu',
+    },
+    data() {},
+}
+
+```
+```js
+<!--子孙组件-->
+export default {
+    inject: ['yushihu'],
+    data() {},
+}
+
+```
+
+## Vuex基础以及使用
+
