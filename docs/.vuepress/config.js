@@ -14,7 +14,9 @@ module.exports = {
                 text: '前端',
                 items: [
                     { text: 'JavaScript & ES6', link: '/javascript/' },
-                    { text: 'VueJs', link: '/vueJs/' }
+                    { text: 'VueJs', link: '/vueJs/' },
+                    { text: 'ES6', link: '/essix/' },
+                    { text: '工程化', link: '/engineering/' }
                 ]
             },
             {

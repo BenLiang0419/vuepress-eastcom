@@ -1,14 +1,12 @@
 ---
 home: true
 heroImage: /logo.png
-actionText: 快速上手 →
-actionLink: guide.html
 features:
-- title: 简洁至上
-  details: 以 Markdown 为中心的项目结构，以最少的配置帮助你专注于写作。
-- title: Vue驱动
-  details: 享受 Vue + webpack 的开发体验，在 Markdown 中使用 Vue 组件，同时可以使用 Vue 来开发自定义主题。
-- title: 高性能
-  details: VuePress 为每个页面预渲染生成静态的 HTML，同时在页面被加载的时候，将作为 SPA 运行。
+- title: 前端
+  details: 通过技术社区学习JavaScript，VueJs，ES6，同时快速创建与部署前端项目。
+- title: Spring
+  details: 学习Spring，SpringBoot，SpringCloud，从而了解架构深处。
+- title: 组件库
+  details: 基于VueJs创建各种组件库，使用组件 Demo 快速体验交互细节；使用前端框架封装的代码帮助工程师快速开发。
 footer: MIT Licensed | Copyright © 2018-present Evan You
 ---
