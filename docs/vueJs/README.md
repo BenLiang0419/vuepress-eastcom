@@ -48,7 +48,6 @@ MVVM包含了 Model（数据层）、View（视图层）、ViewModel（视图数
 :point_right: **进行销毁** :fast_forward: 销毁的时候界面上的真实DOM保持不动的（路由除外），其他挂载的属性消失<br/> 
 :point_right: **destoryed()** :fast_forward: 销毁之后的状态<br/> 
 
-
 ## VueJs常用指令
 
 * **v-model:**<br/>
@@ -118,7 +117,6 @@ export default {
 * **@xxx.self='函数名'**<br/>
 点击绑定的自身标签才会触发事件
 
-
 ## Class 与 Style 如何动态绑定
 
 想法: <br/>
@@ -166,7 +164,6 @@ computed是计算属性，watch是监听属性<br/>
 computed对属性依赖比较大，如果依赖的属性不作改变的话，就不会执行对应的计算属性值
 而且computed有缓存的特性，避免每次获取值，都要重新计算。<br/>
 watch相当于监听某个值后进行回调，只要监听的值做出变化，则会进行调用<br/>
-
 
 ## v-show 和 v-if 的区别
 
@@ -559,4 +556,77 @@ export default {
 ```
 
 ## Vuex基础以及使用
+
+### 特点
+
+* 全局通信
+* 方便缓存
+* 方便通过 vue-devtools 来进行状态相关的bug排查。
+
+### 流程图
+
+![vuex](/image/vuejs/vuex.png)
+
+* `Vue Components`: <br/>
+Vue组件，HTML界面，负责进行各种交互操作，执行Dispatch方法，触发对应的Actions进行响应。
+
+* `Dispatch`: <br/>
+操作行为触发方法，唯一可以触发Actions的方法。
+
+* `Actions`: <br/>
+操作行为处理模块，负责处理从`Vue Components`模块中接收到的所有行为操作，可以进行同步异步的操作处理<br/>
+可以调用后台API进行数据处理，也可以触发其他action以及执行commit方法触发Mutation<br/>
+该模块提供了Promise的封装，以支持action的链式触发。
+
+* `commit`: <br/>
+状态改变提交操作方法，唯一可以触发Mutation的方法。
+
+* `Mutations`: <br/>
+状态改变操作方法，是Vuex修改state的唯一方法。该方法只能进行同步操作，且方法名只能全局唯一。
+
+* `State`: <br/>
+页面状态管理容器对象，全局唯一，以进行统一的状态管理。
+
+**过程：**<br/>
+Vue组件接受交互动作，调用dispatch来执行action的相关处理，如果想要改变页面的状态，则需要调用commit来触发mutations的方法来改变state，
+从而通过getter获取到state新值，重新渲染Vue组件，界面进行改变。
+
+### 使用
+
+```js
+// store.js
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+    state: {
+        // 如同Vue的data
+        count: 0
+    },
+    mutations: {
+        increment (state) {
+            state.count++
+        }
+    },
+    actions: {
+        handleIncrement(context) {
+            context.commit("increment");
+        }   
+    }
+})
+```
+```js
+// index.js
+import Vue from 'vue'
+import App from 'App.vue'
+import store from '@/store/store'
+
+new Vue({
+    store,
+    render: h => h(App)
+}).$mount('#app');
+
+```
 

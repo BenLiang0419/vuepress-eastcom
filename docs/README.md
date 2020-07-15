@@ -8,5 +8,5 @@ features:
   details: 学习Spring，SpringBoot，SpringCloud，从而了解架构深处。
 - title: 组件库
   details: 基于VueJs创建各种组件库，使用组件 Demo 快速体验交互细节；使用前端框架封装的代码帮助工程师快速开发。
-footer: MIT Licensed | Copyright © 2018-present Evan You
+footer: JiaSheng Liang Licensed | Copyright © 2018-present
 ---
